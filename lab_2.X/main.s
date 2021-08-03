@@ -55,6 +55,16 @@ loop:
     
     btfsc   PORTA, 1
     call    dec_portb
+    call    delay_small
+    
+    btfsc   PORTA, 2
+    call    inc_portc
+    call    delay_small
+    
+    btfsc   PORTA, 3
+    call    dec_portc
+    call    delay_small
+    
     
     goto    loop
 
@@ -68,6 +78,18 @@ dec_portb:
     btfsc   PORTA, 1
     goto    $-1
     decfsz  PORTB
+    return
+    
+inc_portc:
+    btfsc   PORTA, 2
+    goto    $-1
+    incf    PORTC
+    return
+
+dec_portc:
+    btfsc   PORTA, 3
+    goto    $-1
+    decfsz  PORTC
     return
     
 config_io:
