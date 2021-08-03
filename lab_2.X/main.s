@@ -49,6 +49,8 @@ main:
     call    config_io
 
 loop:
+    
+    ;boton para incrementar y decrementar el puerto A
     btfsc   PORTA, 0  
     call    inc_portb
     call    delay_small
@@ -57,6 +59,7 @@ loop:
     call    dec_portb
     call    delay_small
     
+    ;boton para incrementar y decrementar el puerto C
     btfsc   PORTA, 2
     call    inc_portc
     call    delay_small
@@ -69,16 +72,16 @@ loop:
     call    suma
     call    delay_small
     
+    ;comprueba si hay un bit de carry
     btfsc   PORTD, 4
     bsf	    PORTE, 0
-    
     btfss   PORTD,4
     bcf	    PORTE, 0
     
     
     goto    loop
 
-inc_portb:
+inc_portb:		;incrementa el puerto B
     btfsc   PORTA, 0
     goto    $-1
     incf    PORTB
@@ -86,7 +89,7 @@ inc_portb:
     clrf    PORTB
     return
 
-dec_portb:
+dec_portb:		;decrementa el puerto C
     movlw   00001111B
     btfsc   PORTA, 1
     goto    $-1
@@ -95,7 +98,7 @@ dec_portb:
     movwf   PORTB
     return
     
-inc_portc:
+inc_portc:		;incrementa el puerto C
     btfsc   PORTA, 2
     goto    $-1
     incf    PORTC
@@ -103,7 +106,7 @@ inc_portc:
     clrf    PORTC
     return
 
-dec_portc:
+dec_portc:		;decrementa el puerto C
     movlw   00001111B
     btfsc   PORTA, 3
     goto    $-1
@@ -112,9 +115,9 @@ dec_portc:
     movwf   PORTC
     return
 
-suma:
-    btfsc   PORTA, 4       ;Ubicacion  del pushbutton
-    goto    $-1            ;
+suma:			   ;Suma los valores de los puertos
+    btfsc   PORTA, 4       
+    goto    $-1            
     movf    PORTB, 0       ;Se selecciona el valor inicial
     addwf   PORTC, 0       ;Valor que se va a sumar
     movwf   PORTD          ;Asigna valor a los leds de salida del puerto D
@@ -134,7 +137,7 @@ config_io:
     bsf     TRISA, 2
     bsf     TRISA, 3
     bsf     TRISA, 4
-    clrf    TRISB
+    clrf    TRISB	;outputs de los pushbuttons
     clrf    TRISC
     clrf    TRISD
     clrf    TRISE
