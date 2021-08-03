@@ -2520,9 +2520,9 @@ loop:
 
     btfsc PORTD, 4
     bsf PORTE, 0
-    bcf PORTE, 0
-    call delay_small
 
+    btfss PORTD,4
+    bcf PORTE, 0
 
 
     goto loop
