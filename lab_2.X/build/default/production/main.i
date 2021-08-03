@@ -2518,6 +2518,10 @@ loop:
     call suma
     call delay_small
 
+    btfsc PORTD, 4
+    bsf PORTE, 0
+
+
     goto loop
 
 inc_portb:
@@ -2568,6 +2572,7 @@ config_io:
     clrf TRISB
     clrf TRISC
     clrf TRISD
+    clrf TRISE
 
     bcf STATUS, 5 ; banco 00
     bcf STATUS, 6
@@ -2575,10 +2580,10 @@ config_io:
     clrf PORTA
     clrf PORTC
     clrf PORTD
+    clrf PORTE
     return
 
 delay_big:
-   ;movlw 198
    movlw 50 ; valor inciial del contador
    movwf cont_big
    call delay_small ; rutina de delay
@@ -2587,7 +2592,6 @@ delay_big:
    return
 
 delay_small:
-   ;movlw 248
    movlw 150 ; valor incial del contador
    movwf cont_small
    decfsz cont_small, 1 ; decrementar el contador
