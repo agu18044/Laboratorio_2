@@ -71,7 +71,10 @@ loop:
     
     btfsc   PORTD, 4
     bsf	    PORTE, 0
+    bcf	    PORTE, 0
+    call    delay_small
     
+  
     
     goto    loop
 
@@ -79,24 +82,34 @@ inc_portb:
     btfsc   PORTA, 0
     goto    $-1
     incf    PORTB
+    btfsc   PORTB, 4
+    clrf    PORTB
     return
 
 dec_portb:
+    movlw   00001111B
     btfsc   PORTA, 1
     goto    $-1
     decfsz  PORTB
+    btfsc   PORTB, 7 
+    movwf   PORTB
     return
     
 inc_portc:
     btfsc   PORTA, 2
     goto    $-1
     incf    PORTC
+    btfsc   PORTC, 4
+    clrf    PORTC
     return
 
 dec_portc:
+    movlw   00001111B
     btfsc   PORTA, 3
     goto    $-1
     decfsz  PORTC
+    btfsc   PORTC, 7 
+    movwf   PORTC
     return
 
 suma:
@@ -106,7 +119,8 @@ suma:
     addwf   PORTC, 0       ;Valor que se va a sumar
     movwf   PORTD          ;Asigna valor a los leds de salida del puerto D
     return
-    
+
+       
 config_io:
     ; Configuracion de los puertos
     banksel ANSEL	; Se selecciona bank 3
