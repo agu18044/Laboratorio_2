@@ -2514,6 +2514,9 @@ loop:
     call dec_portc
     call delay_small
 
+    btfsc PORTA, 4
+    call suma
+    call delay_small
 
     goto loop
 
@@ -2541,6 +2544,14 @@ dec_portc:
     decfsz PORTC
     return
 
+suma:
+    btfsc PORTA, 4 ;Ubicacion del pushbutton
+    goto $-1 ;
+    movf PORTB, 0 ;Se selecciona el valor inicial
+    addwf PORTC, 0 ;Valor que se va a sumar
+    movwf PORTD ;Asigna valor a los leds de salida del puerto D
+    return
+
 config_io:
     ; Configuracion de los puertos
     banksel ANSEL ; Se selecciona bank 3
@@ -2554,14 +2565,16 @@ config_io:
     bsf TRISA, 2
     bsf TRISA, 3
     bsf TRISA, 4
-    ;bsf TRISA, 6
-    ;bsf TRISA, 7
     clrf TRISB
+    clrf TRISC
+    clrf TRISD
 
     bcf STATUS, 5 ; banco 00
     bcf STATUS, 6
     clrf PORTB
     clrf PORTA
+    clrf PORTC
+    clrf PORTD
     return
 
 delay_big:
